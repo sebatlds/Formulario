@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,72 +24,56 @@
             android:padding="5dp">
             <TableRow>
                 <TextView
+                    android:id="@+id/name"
                     android:text="@string/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"/>
-                <TextView
-                    android:id="@+id/resultName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"/>
             </TableRow>
             <TableRow>
                 <TextView
+                    android:id="@+id/email"
                     android:text="@string/correo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"/>
-                <TextView
-                    android:id="@+id/resultEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"/>
             </TableRow>
             <TableRow>
                 <TextView
+                    android:id="@+id/pass"
                     android:text="@string/password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"/>
-                <TextView
-                    android:id="@+id/resultPassword"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"/>
             </TableRow>
             <TableRow>
                 <TextView
+                    android:id="@+id/genero"
                     android:text="@string/genero_respuesta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"/>
-                <TextView
-                    android:id="@+id/resultSex"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"/>
             </TableRow>
             <TableRow>
                 <TextView
+                    android:id="@+id/telefono"
                     android:text="@string/telefono"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"/>
+            </TableRow>
+            <TableRow>
                 <TextView
-                    android:id="@+id/resultNumber"
+                    android:id="@+id/fecha"
+                    android:text="@string/fecha_naciomiento"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"/>
             </TableRow>
             <TableRow>
                 <TextView
-                    android:text="@string/fecha_naciomiento"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"/>
-                <TextView
-                    android:id="@+id/resultDate"
+                    android:id="@+id/lugar"
+                    android:text="@string/lugar_nacimiento"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"/>

@@ -12,11 +12,6 @@ import kotlinx.android.synthetic.main.activity_view_values.*
 
 class ViewValues : AppCompatActivity() {
 
-    var name : String = ""
-    var email : String= ""
-    var pass : String = ""
-    var telephone : String = ""
-    var sex : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +26,14 @@ class ViewValues : AppCompatActivity() {
 
     private fun viewValues(values: Array<String>, hobbies : Array<String>, context: Context) {
         val linearLayout : TableLayout = findViewById(R.id.tableLayout)
-        resultName.text = values[0]
-        resultEmail.text = values[1]
-        resultNumber.text = values[2]
-        resultPassword.text = values[3]
-        resultSex.text = values[4]
-        resultDate.text = values[5]
+        name.text = name.text.toString() +" "+values[0]
+        email.text = email.text.toString() +" "+values[1]
+        pass.text = pass.text.toString()+" "+values[3]
+        genero.text = genero.text.toString()+" "+values[4]
+        telefono.text = telefono.text.toString()+" "+values[2]
+        fecha.text = fecha.text.toString()+" "+values[5]
+        lugar.text = lugar.text.toString()+" "+values[6]
+
         for(item in 0..3){
             if(!hobbies[item].equals("")){
                 val textView = TextView(context)

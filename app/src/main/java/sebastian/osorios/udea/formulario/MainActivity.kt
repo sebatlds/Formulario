@@ -7,16 +7,13 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import kotlinx.android.synthetic.main.activity_main.*
-import sebastian.osorios.udea.formulario.models.FormValues
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    var HOBBIES = 4
+
     var name : String = ""
     var email : String= ""
     var pass : String = ""
@@ -27,6 +24,8 @@ class MainActivity : AppCompatActivity() {
     var walk : String = ""
     var dev : String = ""
     var play : String = ""
+    var city : String = ""
+    lateinit var spinner : Spinner
 
 
 
@@ -35,8 +34,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         var dateText : EditText = findViewById(R.id.EditTextdate)
+        spinner = findViewById<Spinner>(R.id.spinnerCity)
+
 
         dateText.setOnClickListener(){
             var calendar : Calendar = Calendar.getInstance()
@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             }, calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH))
             datePicker.show()
         }
+
         checkMen.setOnClickListener {
             checkMen.isChecked = true
             checkWomen.isChecked = false
@@ -54,6 +55,14 @@ class MainActivity : AppCompatActivity() {
             checkMen.isChecked = false
             checkWomen.isChecked = true
         }
+
+
+        var cities = arrayOf("Medellin","Itagui","Bello","Donmatias","Envigado")
+
+        var arrayAdapter : ArrayAdapter<String> = ArrayAdapter<String>(this,R.layout.spinner_item_cities,cities)
+        spinner.setAdapter(arrayAdapter)
+
+
         save.setOnClickListener {
             var check = true
             if(findViewById<EditText>(R.id.name).text.toString().equals("")){
@@ -71,7 +80,9 @@ class MainActivity : AppCompatActivity() {
             }else if(findViewById<EditText>(R.id.EditTextdate).text.toString().equals("")){
                 check = false
             }
-
+            if(spinner.getSelectedItem().toString().equals("")){
+                check = false
+            }
             if(findViewById<EditText>(R.id.password).text.toString()
                     .equals(findViewById<EditText>(R.id.pass2).text.toString())){
                 if(check){
@@ -91,7 +102,7 @@ class MainActivity : AppCompatActivity() {
                 }else{
                     val alert = AlertDialog.Builder(this)
                     alert.setTitle("Error")
-                    alert.setMessage("Faltan campos por llenar")
+                    alert.setMessage("Faltan campos por completar")
                     alert.setPositiveButton(
                         "Confirmar",null)
                     alert.show()
@@ -117,6 +128,7 @@ class MainActivity : AppCompatActivity() {
         pass = findViewById<EditText>(R.id.password).text.toString()
         telephone = findViewById<EditText>(R.id.telephone).text.toString()
         date = findViewById<EditText>(R.id.EditTextdate).text.toString()
+        city = spinner.getSelectedItem().toString()
         if(hobbie0.isChecked) {
             play = findViewById<CheckBox>(R.id.hobbie0).hint.toString()
         }else{
@@ -144,12 +156,14 @@ class MainActivity : AppCompatActivity() {
             sex = checkWomen.text.toString()
         }
         var hobbies = arrayOf(play,reed,walk,dev)
-        var values = arrayOf(name,email,telephone,pass,sex,date)
+        var values = arrayOf(name,email,telephone,pass,sex,date,city)
         val intento = Intent(this, ViewValues ::class.java)
         intento.putExtra("values",values)
         intento.putExtra("hobbies",hobbies)
         startActivity(intento)
     }
+
+
 
 
 }
