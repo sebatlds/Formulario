@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">Formulario</string>
+    <string name="app_name">Form</string>
     <string name="title_activity">Registrece</string>
     <string name="name">Nombre :</string>
     <string name="email">Correo Electronico :</string>
+    <string name="password_size">La contraseña debe tener por lomenos 8 digitos.</string>
     <string name="correo">Email :</string>
     <string name="telefono">Telefono :</string>
     <string name="password">Contraseña :</string>

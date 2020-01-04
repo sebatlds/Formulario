@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.BoringLayout
 import android.widget.*
 import androidx.annotation.RequiresApi
 import kotlinx.android.synthetic.main.activity_main.*
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     var city : String = ""
     lateinit var spinner : Spinner
 
-
+//todo falta una especie de tolltip que mencione la cantidad y no permitir dias futuros en el date...
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.N)
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         dateText.setOnClickListener(){
             var calendar : Calendar = Calendar.getInstance()
             val datePicker = DatePickerDialog(this,DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                Toast.makeText(this,"Year : "+year + "\nMonth :"+month+"\nDate :"+ dayOfMonth,Toast.LENGTH_SHORT ).show()
+                Toast.makeText(this,"Year : "+year + "\nMonth :"+(month+1)+"\nDate :"+ dayOfMonth,Toast.LENGTH_SHORT ).show()
                 dateText.setText(year.toString() + "/" + (month+1).toString() + "/" + dayOfMonth.toString())
             }, calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH))
             datePicker.show()
@@ -64,60 +65,116 @@ class MainActivity : AppCompatActivity() {
 
 
         save.setOnClickListener {
-            var check = true
-            if(findViewById<EditText>(R.id.name).text.toString().equals("")){
-                check = false
-            }else if(findViewById<EditText>(R.id.email).text.toString().equals("")){
-                check = false
-            }else if(findViewById<EditText>(R.id.password).text.toString().equals("")){
-                check = false
-            }else if(findViewById<EditText>(R.id.pass2).text.toString().equals("")){
-                check = false
-            }else if(!findViewById<CheckBox>(R.id.hobbie0).isChecked &&
-                !findViewById<CheckBox>(R.id.hobbie1).isChecked && !findViewById<CheckBox>(R.id.hobbie2).isChecked &&
-                !findViewById<CheckBox>(R.id.hobbie3).isChecked){
-                check = false
-            }else if(findViewById<EditText>(R.id.EditTextdate).text.toString().equals("")){
-                check = false
-            }
-            if(spinner.getSelectedItem().toString().equals("")){
-                check = false
-            }
-            if(findViewById<EditText>(R.id.password).text.toString()
-                    .equals(findViewById<EditText>(R.id.pass2).text.toString())){
-                if(check){
-                    setDataForm()
-                    findViewById<EditText>(R.id.email).text = null
-                    findViewById<EditText>(R.id.password).text = null
-                    findViewById<EditText>(R.id.pass2).text = null
-                    findViewById<EditText>(R.id.telephone).text = null
-                    findViewById<EditText>(R.id.name).text  = null
-                    findViewById<EditText>(R.id.EditTextdate).text = null
-                    hobbie0.isChecked = false
-                    hobbie1.isChecked = false
-                    hobbie2.isChecked = false
-                    hobbie3.isChecked = false
-                    checkMen.isChecked = true
-                    checkWomen.isChecked = false
-                }else{
-                    val alert = AlertDialog.Builder(this)
-                    alert.setTitle("Error")
-                    alert.setMessage("Faltan campos por completar")
-                    alert.setPositiveButton(
-                        "Confirmar",null)
-                    alert.show()
+            var checkInputs = true
+            var checkEmail = true
+            var checkPasswords = true
+            var checkPassSize = true
+            checkInputs = checkInputs()
+            checkEmail = validateEmail(findViewById<EditText>(R.id.email).text.toString())
+            checkPasswords = validatePassword()
+            checkPassSize = validateSizePassword()
 
-                }
-            }else{
+            if(checkEmail && checkInputs && checkPasswords && checkPassSize ){
+                setDataForm()
+                findViewById<EditText>(R.id.email).text = null
+                findViewById<EditText>(R.id.password).text = null
+                findViewById<EditText>(R.id.pass2).text = null
+                findViewById<EditText>(R.id.telephone).text = null
+                findViewById<EditText>(R.id.name).text  = null
+                findViewById<EditText>(R.id.EditTextdate).text = null
+                hobbie0.isChecked = false
+                hobbie1.isChecked = false
+                hobbie2.isChecked = false
+                hobbie3.isChecked = false
+                checkMen.isChecked = true
+                checkWomen.isChecked = false
+            }else if(!checkInputs){
+                val alert = AlertDialog.Builder(this)
+                alert.setTitle("Error")
+                alert.setMessage("Faltan campos por completar")
+                alert.setPositiveButton(
+                    "Confirmar",null)
+                alert.show()
+            }else if(!checkPassSize && !checkPasswords){
+                val alert = AlertDialog.Builder(this)
+                alert.setTitle("Error")
+                alert.setMessage("Las contraseñas no coinciden. \n Y tampoco cumplen con la cantidad de caracteres!!")
+                alert.setPositiveButton(
+                    "Confirmar",null)
+                alert.show()
+            } else if(!checkPasswords){
                 val alert = AlertDialog.Builder(this)
                 alert.setTitle("Error")
                 alert.setMessage("Las contraseñas deben de coincidir!!!")
                 alert.setPositiveButton(
                     "Confirmar",null)
                 alert.show()
+            } else if(!checkEmail){
+                val alert = AlertDialog.Builder(this)
+                alert.setTitle("Error")
+                alert.setMessage("Verifique el correo electronico")
+                alert.setPositiveButton(
+                    "Confirmar",null)
+                alert.show()
+            }else if(checkPassSize){
+                val alert = AlertDialog.Builder(this)
+                alert.setTitle("Error")
+                alert.setMessage("La contraseña no cumple con la cantidad de caracteres!!!")
+                alert.setPositiveButton(
+                    "Confirmar",null)
+                alert.show()
             }
 
 
+        }
+
+    }
+
+    private fun validateSizePassword(): Boolean {
+        if (findViewById<EditText>(R.id.password).text.toString().length >= 8){
+            return true
+        }else{
+            return false
+        }
+
+    }
+
+    private fun validatePassword(): Boolean {
+        if(findViewById<EditText>(R.id.password).text.toString()
+                .equals(findViewById<EditText>(R.id.pass2).text.toString())){
+            return true
+        }else{
+            return false
+        }
+
+    }
+
+    private fun validateEmail(email: String): Boolean {
+        var chekArroba : Boolean = false
+        var chekPunto : Boolean = false
+        var position : Int = 0
+        var dominioEmail : String
+        for(item in 0 until email.length){
+            dominioEmail = email[item].toString()
+            if(email[item].toString().equals("@")){
+                position = item.toInt()
+                chekArroba = true
+            }
+        }
+        dominioEmail = email.substring(position).toString()
+        if(chekArroba){
+            for(i in 0 until dominioEmail.length){
+                if(dominioEmail[i].toString().equals(".")){
+                    position = i.toInt()
+                    chekPunto = true
+                }
+            }
+        }
+        dominioEmail = dominioEmail.substring(position)
+        if(chekPunto && chekArroba){
+            return true
+        }else{
+            return false
         }
 
     }
@@ -164,7 +221,30 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
+    private fun checkInputs(): Boolean{
+        var check : Boolean = true
+        if(findViewById<EditText>(R.id.name).text.toString().equals("")){
+            check = false
+        }else if(findViewById<EditText>(R.id.email).text.toString().equals("")){
+            check = false
+        }else if(findViewById<EditText>(R.id.telephone).text.toString().equals("")){
+            check = false
+        } else if(findViewById<EditText>(R.id.password).text.toString().equals("")){
+            check = false
+        }else if(findViewById<EditText>(R.id.pass2).text.toString().equals("")){
+            check = false
+        }else if(!findViewById<CheckBox>(R.id.hobbie0).isChecked &&
+            !findViewById<CheckBox>(R.id.hobbie1).isChecked && !findViewById<CheckBox>(R.id.hobbie2).isChecked &&
+            !findViewById<CheckBox>(R.id.hobbie3).isChecked){
+            check = false
+        }else if(findViewById<EditText>(R.id.EditTextdate).text.toString().equals("")){
+            check = false
+        }
+        if(spinner.getSelectedItem().toString().equals("")){
+            check = false
+        }
+        return check
+    }
 
 }
 
