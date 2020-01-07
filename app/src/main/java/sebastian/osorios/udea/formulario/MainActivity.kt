@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        var cities = arrayOf("Medellin","Itagui","Bello","Donmatias","Envigado")
+        var cities = arrayOf("Medellín","Itagüi","Bello","Donmatias","Envigado")
 
         var arrayAdapter : ArrayAdapter<String> = ArrayAdapter<String>(this,R.layout.spinner_item_cities,cities)
         spinner.setAdapter(arrayAdapter)
@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
             } else if(!checkEmail){
                 val alert = AlertDialog.Builder(this)
                 alert.setTitle("Error")
-                alert.setMessage("Verifique el correo electronico")
+                alert.setMessage("Verifique el correo electrónico")
                 alert.setPositiveButton(
                     "Confirmar",null)
                 alert.show()
