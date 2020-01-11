@@ -4,12 +4,14 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.BoringLayout
 import android.widget.*
 import androidx.annotation.RequiresApi
+import com.tooltip.Tooltip
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -28,9 +30,9 @@ class MainActivity : AppCompatActivity() {
     var city : String = ""
     lateinit var spinner : Spinner
 
-//todo falta una especie de tolltip que mencione la cantidad y no permitir dias futuros en el date...
+    //todo falta una especie de tolltip que mencione la cantidad y no permitir dias futuros en el date...
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "WrongViewCast")
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,12 +41,14 @@ class MainActivity : AppCompatActivity() {
         spinner = findViewById<Spinner>(R.id.spinnerCity)
 
 
+
         dateText.setOnClickListener(){
             var calendar : Calendar = Calendar.getInstance()
             val datePicker = DatePickerDialog(this,DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                 Toast.makeText(this,"Year : "+year + "\nMonth :"+(month+1)+"\nDate :"+ dayOfMonth,Toast.LENGTH_SHORT ).show()
                 dateText.setText(year.toString() + "/" + (month+1).toString() + "/" + dayOfMonth.toString())
             }, calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH))
+            datePicker.datePicker.maxDate
             datePicker.show()
         }
 
