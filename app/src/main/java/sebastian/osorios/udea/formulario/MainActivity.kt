@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     var city : String = ""
     lateinit var spinner : Spinner
 
-    //todo falta una especie de tolltip que mencione la cantidad y no permitir dias futuros en el date...
 
     @SuppressLint("SetTextI18n", "WrongViewCast")
     @RequiresApi(Build.VERSION_CODES.N)
@@ -39,13 +38,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         var dateText : EditText = findViewById(R.id.EditTextdate)
         spinner = findViewById<Spinner>(R.id.spinnerCity)
+        var tooltip : ImageView = findViewById(R.id.imageView)
 
-
-
+        tooltip.setOnClickListener(){
+            Toast.makeText(this,"La contraseña debe tener por lo menos 8 dígitos.",Toast.LENGTH_SHORT ).show()
+        }
         dateText.setOnClickListener(){
             var calendar : Calendar = Calendar.getInstance()
             val datePicker = DatePickerDialog(this,DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                Toast.makeText(this,"Year : "+year + "\nMonth :"+(month+1)+"\nDate :"+ dayOfMonth,Toast.LENGTH_SHORT ).show()
                 dateText.setText(year.toString() + "/" + (month+1).toString() + "/" + dayOfMonth.toString())
             }, calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH))
             datePicker.datePicker.maxDate
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        var cities = arrayOf("Medellín","Itagüi","Bello","Donmatias","Envigado")
+        var cities = arrayOf("Medellín","Itagüi","Bello","Don Matias","Envigado")
 
         var arrayAdapter : ArrayAdapter<String> = ArrayAdapter<String>(this,R.layout.spinner_item_cities,cities)
         spinner.setAdapter(arrayAdapter)
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                 alert.setPositiveButton(
                     "Confirmar",null)
                 alert.show()
-            }else if(checkPassSize){
+            }else if(!checkPassSize){
                 val alert = AlertDialog.Builder(this)
                 alert.setTitle("Error")
                 alert.setMessage("La contraseña no cumple con la cantidad de caracteres!!!")
